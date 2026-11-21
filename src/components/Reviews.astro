@@ -1,0 +1,36 @@
+---
+import { formatReviewDate, reviews } from "../data/reviews";
+
+function stars(rating: number): string {
+  return "★".repeat(rating) + "☆".repeat(5 - rating);
+}
+---
+
+<section class="section" id="reviews" data-reviews>
+  <div class="container">
+    <p class="section__eyebrow" data-reveal>04 / Отзывы</p>
+    <h2 class="section__title" data-reveal>Как на картах</h2>
+    <p class="section__lead" data-reveal>
+      Горизонтальный ряд со snap. Листай пальцем или трекпадом.
+    </p>
+
+    <div class="reviews-rail" role="region" aria-label="Отзывы клиентов">
+      {
+        reviews.map((review) => (
+          <article class="review-card" data-reveal>
+            <div class="review-card__top">
+              <div>
+                <h3 class="review-card__name">{review.name}</h3>
+                <p class="review-card__date">{formatReviewDate(review.date)}</p>
+              </div>
+              <div class="review-card__stars" aria-label={`${review.rating} из 5`}>
+                {stars(review.rating)}
+              </div>
+            </div>
+            <p class="review-card__text">{review.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import { site } from "../config";
+---
+
+<section class="section section--ink" id="owner" data-owner>
+  <div class="container">
+    <div class="owner">
+      <div data-reveal>
+        <p class="section__eyebrow">05 / Для владельца</p>
+        <h2 class="section__title">Как это видит барбершоп</h2>
+        <p class="section__lead">
+          Сайт — витрина. Запись живёт в Mini App «Смена»: мастеру в Telegram, окна — в YCLIENTS.
+        </p>
+        <ul class="owner__points">
+          <li>Новая запись прилетает мастеру сообщением, без дежурства у ресепшена.</li>
+          <li>Свободные окна синхронизируются с YCLIENTS — без двойных броней.</li>
+          <li>Напоминания режут неявки: клиент подтверждает или переносит заранее.</li>
+        </ul>
+      </div>
+
+      <div class="phone-mock" data-phone-mock data-reveal aria-hidden="true">
+        <div class="phone-mock__screen">
+          <div class="phone-mock__status"></div>
+          <div class="phone-mock__toast" data-phone-toast>
+            <strong>Смена · новая запись</strong>
+            <span>Артём · Стрижка · сегодня 18:15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="owner__credit" data-reveal>
+      <a href={site.author.site} target="_blank" rel="noopener noreferrer">
+        {site.author.label}
+      </a>
+      <a
+        class="btn btn--primary"
+        href={site.ownerCta}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-owner-cta
+      >
+        Хочу такой сайт
+      </a>
+    </div>
+  </div>
+</section>

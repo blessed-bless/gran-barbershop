@@ -1,0 +1,116 @@
+---
+import { existsSync, statSync } from "node:fs";
+import { join } from "node:path";
+import type { HeroMedia } from "../lib/hero-media";
+import { site } from "../config";
+import BookingCard from "./BookingCard.astro";
+
+type Props = {
+  media: HeroMedia;
+};
+
+const { media } = Astro.props;
+
+const webmPath = join(process.cwd(), "public/media/hero/cut.webm");
+const mp4Path = join(process.cwd(), "public/media/hero/cut.mp4");
+const hasWebm = existsSync(webmPath) && statSync(webmPath).size > 1024;
+const hasMp4 = existsSync(mp4Path) && statSync(mp4Path).size > 1024;
+const hasVideo = hasWebm || hasMp4;
+---
+
+<section class="hero" data-hero aria-label="Главный экран">
+  <div class="hero__media media-grain" aria-hidden="true">
+    {
+      hasVideo ? (
+        <template data-hero-video-sources>
+          {hasWebm && <source src="/media/hero/cut.webm" type="video/webm" />}
+          {hasMp4 && <source src="/media/hero/cut.mp4" type="video/mp4" />}
+        </template>
+      ) : null
+    }
+    <picture class="hero__picture">
+      <source
+        media="(max-width: 767px)"
+        type="image/avif"
+        srcset={media.mobileAvifSrcset}
+        sizes="100vw"
+      />
+      <source
+        media="(max-width: 767px)"
+        type="image/webp"
+        srcset={media.mobileWebpSrcset}
+        sizes="100vw"
+      />
+      <source
+        media="(min-width: 768px)"
+        type="image/avif"
+        srcset={media.desktopAvifSrcset}
+        sizes="100vw"
+      />
+      <source
+        media="(min-width: 768px)"
+        type="image/webp"
+        srcset={media.desktopWebpSrcset}
+        sizes="100vw"
+      />
+      <img
+        class="hero__poster"
+        src={media.mobileFallback.src}
+        width={828}
+        height={1035}
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <div class="hero__shade"></div>
+  </div>
+
+  <div class="container hero__content">
+    <div class="hero__copy">
+      <h1 class="hero__title" data-hero-title>
+        Стрижка, после которой хочется селфи
+      </h1>
+    </div>
+    <div class="hero__booking">
+      <BookingCard />
+      <p class="hero__proof">
+        <span
+          >{site.rating.value} ★ · {site.rating.count} отзывов на {site.rating.source}</span
+        >
+        <span class="hero__proof-hours">{site.hours.label}</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero__picture,
+  .hero__poster,
+  .hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__picture {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__poster {
+    display: block;
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero__shade {
+    z-index: 2;
+  }
+</style>

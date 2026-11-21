@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Masters from "../components/Masters.astro";
+import Works from "../components/Works.astro";
+import Reviews from "../components/Reviews.astro";
+import Owner from "../components/Owner.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import FloatingBook from "../components/FloatingBook.astro";
+import { buildHeroMedia } from "../lib/hero-media";
+import "../styles/sections.css";
+
+const heroMedia = await buildHeroMedia();
+---
+
+<BaseLayout
+  heroPreload={{
+    href: heroMedia.mobileLcp.src,
+    imagesrcset: heroMedia.mobileAvifSrcset,
+    imagesizes: "100vw",
+  }}
+>
+  <Header />
+  <main id="main">
+    <Hero media={heroMedia} />
+    <Services />
+    <Masters />
+    <Works />
+    <Reviews />
+    <Owner />
+    <Contacts />
+  </main>
+  <Footer />
+  <FloatingBook />
+</BaseLayout>

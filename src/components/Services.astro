@@ -1,0 +1,37 @@
+---
+import { formatDuration, formatPrice, services } from "../data/services";
+---
+
+<section class="section" id="services" data-services>
+  <div class="container">
+    <p class="section__eyebrow" data-reveal>01 / Услуги</p>
+    <h2 class="section__title" data-reveal>Ритуалы, а не прайс</h2>
+    <p class="section__lead" data-reveal>
+      Шесть позиций. Без навязанных пакетов. Нажал «Выбрать» — и карточка записи уже знает услугу.
+    </p>
+
+    <div class="rituals">
+      {
+        services.map((service) => (
+          <article class="ritual" data-reveal>
+            <div>
+              <h3 class="ritual__name">{service.name}</h3>
+              <p class="ritual__desc">{service.description}</p>
+            </div>
+            <div class="ritual__meta">
+              <span class="ritual__price">{formatPrice(service.price)}</span>
+              <span class="ritual__duration">{formatDuration(service.durationMin)}</span>
+            </div>
+            <button
+              type="button"
+              class="btn btn--soft"
+              data-service-pick={service.id}
+            >
+              Выбрать
+            </button>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

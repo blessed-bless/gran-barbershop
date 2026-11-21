@@ -1,0 +1,127 @@
+---
+import { getImage } from "astro:assets";
+import artem from "../assets/media/masters/artem.jpg";
+import ilya from "../assets/media/masters/ilya.jpg";
+import timur from "../assets/media/masters/timur.jpg";
+import kirill from "../assets/media/masters/kirill.jpg";
+import artem1 from "../assets/media/works/artem-1.jpg";
+import artem2 from "../assets/media/works/artem-2.jpg";
+import artem3 from "../assets/media/works/artem-3.jpg";
+import ilya1 from "../assets/media/works/ilya-1.jpg";
+import ilya2 from "../assets/media/works/ilya-2.jpg";
+import ilya3 from "../assets/media/works/ilya-3.jpg";
+import timur1 from "../assets/media/works/timur-1.jpg";
+import timur2 from "../assets/media/works/timur-2.jpg";
+import timur3 from "../assets/media/works/timur-3.jpg";
+import kirill1 from "../assets/media/works/kirill-1.jpg";
+import kirill2 from "../assets/media/works/kirill-2.jpg";
+import kirill3 from "../assets/media/works/kirill-3.jpg";
+import { experienceLabel, masters } from "../data/masters";
+
+const photos = {
+  artem: { photo: artem, works: [artem1, artem2, artem3] },
+  ilya: { photo: ilya, works: [ilya1, ilya2, ilya3] },
+  timur: { photo: timur, works: [timur1, timur2, timur3] },
+  kirill: { photo: kirill, works: [kirill1, kirill2, kirill3] },
+} as const;
+
+async function portrait(src: typeof artem) {
+  const avif280 = await getImage({ src, width: 280, format: "avif", quality: 62 });
+  const avif420 = await getImage({ src, width: 420, format: "avif", quality: 62 });
+  const avif560 = await getImage({ src, width: 560, format: "avif", quality: 62 });
+  const webp420 = await getImage({ src, width: 420, format: "webp", quality: 62 });
+  return {
+    avif: `${avif280.src} 280w, ${avif420.src} 420w, ${avif560.src} 560w`,
+    webp: `${webp420.src} 420w`,
+    src: webp420.src,
+  };
+}
+
+async function workUrls(srcs: readonly (typeof artem1)[]) {
+  return Promise.all(
+    srcs.map(async (src) => {
+      const img = await getImage({ src, width: 260, format: "avif", quality: 60 });
+      return img.src;
+    }),
+  );
+}
+
+const portraits = {
+  artem: await portrait(artem),
+  ilya: await portrait(ilya),
+  timur: await portrait(timur),
+  kirill: await portrait(kirill),
+};
+
+const workSrcs = {
+  artem: await workUrls(photos.artem.works),
+  ilya: await workUrls(photos.ilya.works),
+  timur: await workUrls(photos.timur.works),
+  kirill: await workUrls(photos.kirill.works),
+};
+
+const portraitFocus: Record<keyof typeof photos, string> = {
+  artem: "52% 12%",
+  ilya: "48% 28%",
+  timur: "40% 55%",
+  kirill: "62% 20%",
+};
+---
+
+<section class="section section--ink" id="masters" data-masters>
+  <div class="container">
+    <p class="section__eyebrow" data-reveal>02 / Мастера</p>
+    <h2 class="section__title" data-reveal>Четыре мастера — четыре почерка</h2>
+    <p class="section__lead" data-reveal>
+      Наведи или тапни карточку — увидишь три работы. «К этому мастеру» сразу открывает запись.
+    </p>
+
+    <div class="masters-grid">
+      {
+        masters.map((master) => {
+          const portrait = portraits[master.id as keyof typeof portraits];
+          const works = workSrcs[master.id as keyof typeof workSrcs];
+          return (
+            <article
+              class={`master-card master-card--${master.id}`}
+              data-master-card
+              data-master-id={master.id}
+              data-reveal
+              data-master-works={JSON.stringify(works)}
+              tabindex="0"
+              aria-expanded="false"
+              aria-label={`${master.name}, ${master.specialty}`}
+            >
+              <div
+                class="master-card__photo-slot"
+                data-master-portrait
+                data-avif={portrait.avif}
+                data-webp={portrait.webp}
+                data-src={portrait.src}
+                data-alt={`Мастер ${master.name}`}
+                data-object-position={portraitFocus[master.id as keyof typeof portraitFocus]}
+              >
+              </div>
+              <div class="master-card__body">
+                <h3 class="master-card__name">{master.name}</h3>
+                <p class="master-card__meta">
+                  {experienceLabel(master.experienceYears)} · {master.specialty}
+                </p>
+              </div>
+              <div class="master-card__works" data-master-works-mount aria-hidden="true"></div>
+              <div class="master-card__actions">
+                <button
+                  type="button"
+                  class="btn btn--ghost"
+                  data-master-book={master.id}
+                >
+                  К этому мастеру
+                </button>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

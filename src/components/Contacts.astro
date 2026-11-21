@@ -1,0 +1,47 @@
+---
+import { Picture } from "astro:assets";
+import interior from "../assets/media/interior/interior.jpg";
+import { site } from "../config";
+---
+
+<section class="section" id="contacts" data-contacts>
+  <div class="container">
+    <p class="section__eyebrow" data-reveal>06 / Контакты</p>
+    <h2 class="section__title" data-reveal>Найти «Грань»</h2>
+
+    <div class="contacts-grid">
+      <div class="contacts-card" data-reveal>
+        <h3>Адрес</h3>
+        <p>{site.address.full}</p>
+        <h3 style="margin-top: 1.5rem">Часы</h3>
+        <p>Ежедневно {site.hours.weekdays}</p>
+        <h3 style="margin-top: 1.5rem">Телефон</h3>
+        <p><a href={site.phoneHref}>{site.phone}</a></p>
+      </div>
+
+      <a
+        class="contacts-map"
+        href={site.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-reveal
+        aria-label="Открыть адрес на Яндекс Картах"
+      >
+        <Picture
+          src={interior}
+          alt={`Зал «Грань»: ${site.address.full}`}
+          widths={[480, 720, 1200]}
+          sizes="(max-width: 899px) 100vw, 50vw"
+          formats={["avif", "webp"]}
+          quality={68}
+          width={2400}
+          height={1600}
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
+          class="contacts-map__photo"
+        />
+      </a>
+    </div>
+  </div>
+</section>

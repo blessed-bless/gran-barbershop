@@ -1,0 +1,170 @@
+---
+import "../styles/global.css";
+import { site } from "../config";
+
+type Props = {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  heroPreload?: {
+    href: string;
+    imagesrcset: string;
+    imagesizes: string;
+  };
+};
+
+const {
+  title = `${site.name} — барбершоп в Казани`,
+  description = "Барбершоп «Грань» в Казани. Запись за 30 секунд: мастер, услуга, ближайшее окно. Стрижки, борода, королевское бритьё.",
+  canonicalPath = "/",
+  ogImage = "/og.jpg",
+  heroPreload,
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, site.url).toString();
+const ogUrl = new URL(ogImage, site.url).toString();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  name: site.name,
+  image: ogUrl,
+  url: site.url,
+  telephone: site.phoneHref.replace("tel:", ""),
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: site.geo.lat,
+    longitude: site.geo.lng,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: site.hours.opens,
+      closes: site.hours.closes,
+    },
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: site.rating.value,
+    reviewCount: site.rating.count,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  priceRange: "₽₽",
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#EFE8DE" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {
+      import.meta.env.PUBLIC_NOINDEX === "true" ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : null
+    }
+    <script is:inline>
+      (function () {
+        if (!/\.twc1\.net$/i.test(location.hostname)) return;
+        if (document.querySelector('meta[name="robots"]')) return;
+        var meta = document.createElement("meta");
+        meta.name = "robots";
+        meta.content = "noindex, nofollow";
+        document.head.appendChild(meta);
+      })();
+    </script>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    {
+      heroPreload ? (
+        <link
+          rel="preload"
+          as="image"
+          type="image/avif"
+          href={heroPreload.href}
+          imagesrcset={heroPreload.imagesrcset}
+          imagesizes={heroPreload.imagesizes}
+          media="(max-width: 767px)"
+          fetchpriority="high"
+        />
+      ) : null
+    }
+    <link
+      rel="preload"
+      href="/fonts/playfair-headings-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {
+      site.metrika.id ? (
+        <script is:inline define:vars={{ metrikaId: site.metrika.id }}>
+          (function (m, e, t, r, i, k, a) {
+            m[i] =
+              m[i] ||
+              function () {
+                (m[i].a = m[i].a || []).push(arguments);
+              };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+              if (document.scripts[j].src === r) return;
+            }
+            (k = e.createElement(t)),
+              (a = e.getElementsByTagName(t)[0]),
+              (k.async = 1),
+              (k.src = r),
+              a.parentNode.insertBefore(k, a);
+          })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+          ym(metrikaId, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+          });
+        </script>
+      ) : null
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержимому</a>
+    <slot />
+    <script>
+      import "../scripts/boot.ts";
+    </script>
+  </body>
+</html>

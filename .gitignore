@@ -1,0 +1,36 @@
+# build output
+dist/
+# Astro types cache
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env*
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# editor / agent local
+.cursor/
+
+# local tools (portable ffmpeg etc.)
+tools/
+
+# hero source (encode to cut.* via npm run encode:hero)
+public/media/hero/source.mp4
+public/media/hero/poster-frame.png
+
+# local audits
+lighthouse-*.json
+.lighthouseci/

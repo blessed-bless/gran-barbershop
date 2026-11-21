@@ -1,0 +1,14 @@
+---
+import { site } from "../config";
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p>© {new Date().getFullYear()} {site.name}. Казань.</p>
+    <p>
+      <a href="/privacy">Политика конфиденциальности</a>
+      ·
+      <a href={site.author.site} target="_blank" rel="noopener noreferrer">dubstepmolitva.ru</a>
+    </p>
+  </div>
+</footer>

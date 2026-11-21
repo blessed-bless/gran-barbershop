@@ -1,0 +1,135 @@
+---
+import { getImage } from "astro:assets";
+import artem from "../assets/media/masters/artem.jpg";
+import ilya from "../assets/media/masters/ilya.jpg";
+import timur from "../assets/media/masters/timur.jpg";
+import kirill from "../assets/media/masters/kirill.jpg";
+import { site } from "../config";
+
+const masterPhotos = {
+  artem: (
+    await getImage({
+      src: artem,
+      width: 96,
+      height: 96,
+      format: "webp",
+      quality: 70,
+    })
+  ).src,
+  ilya: (
+    await getImage({
+      src: ilya,
+      width: 96,
+      height: 96,
+      format: "webp",
+      quality: 70,
+    })
+  ).src,
+  timur: (
+    await getImage({
+      src: timur,
+      width: 96,
+      height: 96,
+      format: "webp",
+      quality: 70,
+    })
+  ).src,
+  kirill: (
+    await getImage({
+      src: kirill,
+      width: 96,
+      height: 96,
+      format: "webp",
+      quality: 70,
+    })
+  ).src,
+};
+---
+
+<section
+  class="booking"
+  id="booking"
+  data-booking
+  tabindex="-1"
+  aria-labelledby="booking-title"
+>
+  <script
+    type="application/json"
+    data-booking-master-photos
+    set:html={JSON.stringify(masterPhotos)}
+  />
+  <div class="booking__head">
+    <h2 class="booking__title" id="booking-title">Запись онлайн</h2>
+    <span class="booking__step" data-booking-live aria-live="polite">Выберите мастера</span>
+  </div>
+
+  <div
+    class="booking__progress"
+    data-booking-progress
+    role="progressbar"
+    aria-valuemin="1"
+    aria-valuemax="4"
+    aria-valuenow="1"
+    aria-label="Шаг записи"
+    style="--booking-progress: 25%"
+  >
+  </div>
+
+  <div class="booking-panel is-active" data-booking-panel="1">
+    <div class="booking-options" data-booking-masters></div>
+  </div>
+
+  <div class="booking-panel" data-booking-panel="2" hidden>
+    <div class="booking-options" data-booking-services></div>
+  </div>
+
+  <div class="booking-panel" data-booking-panel="3" hidden>
+    <div class="booking-chips" data-booking-days role="group" aria-label="День"></div>
+    <div class="booking-chips" data-booking-times role="group" aria-label="Время"></div>
+  </div>
+
+  <div class="booking-panel" data-booking-panel="4" hidden>
+    <div data-booking-summary></div>
+    <div class="booking__actions">
+      <button type="button" class="btn btn--primary" data-booking-confirm>Подтвердить</button>
+      <a
+        class="btn btn--ghost"
+        href={site.telegramBot}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-booking-tg
+      >
+        Записаться в Telegram
+      </a>
+    </div>
+  </div>
+
+  <div class="booking-panel" data-booking-panel="5" hidden>
+    <div class="booking__success">
+      <h3>Заявка собрана</h3>
+      <p>
+        Это демо-сайт. В «Смене» запись уходит мастеру в Telegram и синхронизируется с окнами.
+      </p>
+      <div class="booking__actions">
+        <a
+          class="btn btn--primary"
+          href={site.telegramBot}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-booking-tg
+        >
+          Открыть Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="booking__nav">
+    <button type="button" class="btn btn--ghost" data-booking-back hidden aria-hidden="true">
+      Назад
+    </button>
+    <button type="button" class="btn btn--primary" data-booking-next disabled>
+      Дальше
+    </button>
+  </div>
+</section>

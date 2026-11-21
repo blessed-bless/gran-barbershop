@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../config";
+import "../styles/sections.css";
+---
+
+<BaseLayout
+  title={`Политика конфиденциальности — ${site.name}`}
+  description="Как барбершоп «Грань» обрабатывает данные при записи онлайн."
+  canonicalPath="/privacy"
+>
+  <Header />
+  <main id="main" class="section">
+    <div class="container" style="max-width: 42rem">
+      <p class="section__eyebrow">Документы</p>
+      <h1 class="section__title" style="max-width: none">Политика конфиденциальности</h1>
+      <div class="section__lead" style="max-width: none; display: grid; gap: 1rem">
+        <p>
+          Этот демо-сайт барбершопа «{site.name}» показывает витрину и форму записи.
+          Реальная запись в проде уходит в Telegram Mini App «Смена».
+        </p>
+        <p>
+          На демо-стенде заявка не сохраняется на сервере: данные остаются в браузере
+          на время заполнения формы. Ссылки на Telegram ведут на заглушку бота.
+        </p>
+        <p>
+          Если подключить Яндекс.Метрику (ID в <code>src/config.ts</code>), она может
+          собирать обезличенную статистику визитов согласно политике Яндекса.
+        </p>
+        <p>
+          Вопросы по сайту: <a href={site.ownerCta}>t.me/ketasonx</a>
+          или <a href={site.author.site}>{site.author.site.replace("https://", "")}</a>.
+        </p>
+      </div>
+      <p style="margin-top: 2rem">
+        <a class="btn btn--ghost" href="/">На главную</a>
+      </p>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

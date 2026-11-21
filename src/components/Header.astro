@@ -1,0 +1,24 @@
+---
+import { site } from "../config";
+
+const links = [
+  { href: "#services", label: "Услуги" },
+  { href: "#masters", label: "Мастера" },
+  { href: "#works", label: "Работы" },
+  { href: "#reviews", label: "Отзывы" },
+  { href: "#contacts", label: "Контакты" },
+];
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="logo" href="/">ГРАНЬ</a>
+    <nav class="nav" aria-label="Основная навигация">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <div class="site-header__actions">
+      <a class="site-header__phone" href={site.phoneHref}>{site.phone}</a>
+      <a class="btn btn--primary" href="#booking">Записаться</a>
+    </div>
+  </div>
+</header>
