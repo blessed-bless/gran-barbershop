@@ -61,4 +61,5 @@ Timeweb Cloud Apps, frontend / Astro:
 
 - команда сборки: `npm run build`
 - директория сборки: `dist`
-- домен: `gran.dubstepmolitva.ru` (CNAME на адрес Apps)
+- Node.js: 22.12 или новее
+- домен: `gran.dubstepmolitva.ru` (A-запись с IPv4 из настроек приложения)

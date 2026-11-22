@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gran-kazan.example/sitemap.xml
+Sitemap: https://gran.dubstepmolitva.ru/sitemap.xml

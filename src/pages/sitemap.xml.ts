@@ -9,9 +9,7 @@ export const GET: APIRoute = () => {
 ${pages
   .map(
     (path) => `  <url>
-    <loc>${site.url}${path === "/" ? "" : path}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>${path === "/" ? "1.0" : "0.4"}</priority>
+    <loc>${new URL(path, site.url).href}</loc>
   </url>`,
   )
   .join("\n")}
